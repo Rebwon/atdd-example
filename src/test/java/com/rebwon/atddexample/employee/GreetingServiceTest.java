@@ -35,17 +35,17 @@ class GreetingServiceTest {
 		String msg = service.greet(nonExistingLastName);
 		assertThat(msg).isEqualTo("Who is this " + nonExistingLastName + " you're talking about?");*/
 
-		String lastName = this.nonExistingLastName;
+		String msg = greet(this.nonExistingLastName);
+		assertThat(msg).isEqualTo("Who is this " + this.nonExistingLastName + " you're talking about?");
+
+		String msg1 = greet(existingLastName);
+		assertThat(msg1).isEqualTo(String.format("Hello %s %s!", firstName, this.lastName));
+	}
+
+	private String greet(String lastName) {
 		Optional<Employee> employee = repository.findByLastName(lastName);
-		String msg = employee
+		return employee
 			.map(e -> String.format("Hello %s %s!", e.getFirstName(), e.getLastName()))
 			.orElse("Who is this " + lastName + " you're talking about?");
-		assertThat(msg).isEqualTo("Who is this " + lastName + " you're talking about?");
-
-		Optional<Employee> employee1 = repository.findByLastName(existingLastName);
-		String msg1 = employee1
-			.map(e -> String.format("Hello %s %s!", e.getFirstName(), e.getLastName()))
-			.orElse("Who is this " + existingLastName + " you're talking about?");
-		assertThat(msg1).isEqualTo(String.format("Hello %s %s!", firstName, this.lastName));
 	}
 }
